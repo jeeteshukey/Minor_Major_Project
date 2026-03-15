@@ -14,8 +14,8 @@ print("Using device:", device)
 
 
 # Dataset paths
-train_dir = "datasets/breed_classification/train"
-val_dir = "datasets/breed_classification/val"
+train_dir = "datasets/breed_classification_2/train"
+val_dir = "datasets/breed_classification_2/val"
 
 
 # -------------------------------
@@ -80,7 +80,7 @@ optimizer = optim.Adam(model.parameters(), lr=0.0001)
 
 
 # Training settings
-epochs = 40
+epochs = 30
 
 
 for epoch in range(epochs):

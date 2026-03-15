@@ -6,12 +6,9 @@ import torch.nn.functional as F
 from src.breed_classification.model import get_model
 
 
-# Class names (must match training folders)
 classes = [
+    "Gir",
     "Holstein_Friesian",
-    "Jaffarabadi",
-    "Jersey",
-    "Murrah",
     "Sahiwal"
 ]
 
