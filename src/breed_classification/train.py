@@ -76,7 +76,7 @@ model = model.to(device)
 
 # Loss function and optimizer
 criterion = nn.CrossEntropyLoss()
-optimizer = optim.Adam(model.parameters(), lr=0.0001)
+optimizer = optim.Adam(model.parameters(), lr = 0.00005)
 
 
 # Training settings
