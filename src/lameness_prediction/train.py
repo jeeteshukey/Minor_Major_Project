@@ -1,46 +1,49 @@
 import pandas as pd
+import numpy as np
+import os
 import joblib
 
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score, classification_report
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import cross_val_score
 
-# Load dataset
-df = pd.read_csv("datasets/lameness/processed/final_dataset.csv")
+# 📂 Load dataset
+df = pd.read_csv("datasets/lameness/final_dataset.csv")
 
-# Split features & label
-X = df.drop("label", axis=1)
+# 🔀 Shuffle
+df = df.sample(frac=1).reset_index(drop=True)
+
+# 🎯 Features & Labels
+X = df.drop([
+    "label",
+    "movement_ratio"   # remove weak feature
+], axis=1)
+
 y = df["label"]
 
-# Train-test split
-X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.2, random_state=42
-)
+# 🤖 Model (BEST FOR SMALL DATA)
+model = LogisticRegression(max_iter=1000)
 
-# Scaling
-scaler = StandardScaler()
-X_train = scaler.fit_transform(X_train)
-X_test = scaler.transform(X_test)
+# 📊 Cross Validation
+scores = cross_val_score(model, X, y, cv=5)
 
-# Model
-model = RandomForestClassifier(
-    n_estimators=200,
-    random_state=42
-)
+print("\n📊 Cross-Validation Results:")
+print("Accuracy per fold:", scores)
 
-# Train
-model.fit(X_train, y_train)
+print("\n✅ Mean Accuracy: {:.2f}%".format(scores.mean() * 100))
+print("📉 Standard Deviation: {:.2f}".format(np.std(scores)))
 
-# Predict
-y_pred = model.predict(X_test)
+print("\n📌 Accuracy Range: {:.2f}% - {:.2f}%".format(
+    scores.min() * 100,
+    scores.max() * 100
+))
 
-# Results
-print("Accuracy:", accuracy_score(y_test, y_pred))
-print(classification_report(y_test, y_pred))
+# 🧠 Train on full data
+model.fit(X, y)
 
-# Save model & scaler
-joblib.dump(model, "models/lameness_model.pkl")
-joblib.dump(scaler, "models/scaler.pkl")
+# 💾 Save model
+model_dir = "models/lameness_predictor"
+os.makedirs(model_dir, exist_ok=True)
 
-print("Model saved successfully ✅")
+joblib.dump(model, os.path.join(model_dir, "model.pkl"))
+
+print("\nModel saved successfully ✅")

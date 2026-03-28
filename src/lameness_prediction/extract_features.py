@@ -1,7 +1,6 @@
 import os
 import cv2
 import mediapipe as mp
-from mediapipe.python.solutions import pose as mp_pose
 import numpy as np
 import pandas as pd
 
