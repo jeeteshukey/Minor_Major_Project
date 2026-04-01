@@ -74,8 +74,8 @@ def extract_features(video_path):
 
 # -------- MAIN SCRIPT --------
 def main():
-    input_folder = "datasets/lameness/videos"
-    output_folder = "datasets/lameness/csv"
+    input_folder = "datasets/gait_analysis/videos"
+    output_folder = "datasets/gait_analysis/csv"
 
     os.makedirs(output_folder, exist_ok=True)
 

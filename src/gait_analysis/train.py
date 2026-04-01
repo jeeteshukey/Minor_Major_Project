@@ -7,7 +7,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import cross_val_score
 
 # 📂 Load dataset
-df = pd.read_csv("datasets/lameness/final_dataset.csv")
+df = pd.read_csv("datasets/gait_analysis/final_dataset.csv")
 
 # 🔀 Shuffle
 df = df.sample(frac=1).reset_index(drop=True)
@@ -41,7 +41,7 @@ print("\n📌 Accuracy Range: {:.2f}% - {:.2f}%".format(
 model.fit(X, y)
 
 # 💾 Save model
-model_dir = "models/lameness_predictor"
+model_dir = "models/gait"
 os.makedirs(model_dir, exist_ok=True)
 
 joblib.dump(model, os.path.join(model_dir, "model.pkl"))

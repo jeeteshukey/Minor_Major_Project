@@ -38,7 +38,6 @@ streamlit run app/Home.py
 ## Detected Breeds
 
 * Holstein Friesian
-* Jaffarabadi
-* Jersey
-* Murrah
+* Gir
 * Sahiwal
+ 

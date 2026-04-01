@@ -2,10 +2,10 @@ import os
 import pandas as pd
 
 # 📂 Path to individual CSV files
-csv_folder = "datasets/lameness/csv"
+csv_folder = "datasets/gait_analysis/csv"
 
 # 📂 Output final dataset
-output_file = "datasets/lameness/final_dataset.csv"
+output_file = "datasets/gait_analysis/final_dataset.csv"
 
 all_data = []
 

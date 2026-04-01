@@ -5,7 +5,7 @@ import pandas as pd
 import joblib
 
 # Load model
-model = joblib.load("models/lameness_predictor/model.pkl")
+model = joblib.load("models/gait/model.pkl")
 
 mp_pose = mp.solutions.pose
 pose = mp_pose.Pose()
