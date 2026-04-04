@@ -10,7 +10,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../"
 from src.breed_classification.predict import predict_breed
 
 
-st.title("🐄 Breed Classification")
+st.title("Breed Classification")
 
 st.write("Upload a cow image to identify its breed.")
 
