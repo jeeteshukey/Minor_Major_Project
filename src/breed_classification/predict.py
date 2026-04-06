@@ -5,19 +5,14 @@ import torch.nn.functional as F
 
 from src.breed_classification.model import get_model
 
-
 classes = [
     "Gir",
     "Holstein_Friesian",
     "Sahiwal"
 ]
 
-
-# Device
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-
-# Image transform (same as validation)
 transform = transforms.Compose([
     transforms.Resize((224, 224)),
     transforms.ToTensor(),
@@ -27,8 +22,6 @@ transform = transforms.Compose([
     )
 ])
 
-
-# Load trained model
 def load_model():
 
     model = get_model(len(classes))
@@ -43,8 +36,6 @@ def load_model():
 
     return model
 
-
-# Predict breed
 def predict_breed(image_path):
 
     model = load_model()
@@ -61,7 +52,6 @@ def predict_breed(image_path):
 
         outputs = model(image)
 
-        # Convert outputs to probabilities
         probabilities = F.softmax(outputs, dim=1)
 
         confidence, predicted = torch.max(probabilities, 1)
@@ -72,15 +62,13 @@ def predict_breed(image_path):
 
     return breed, confidence_score
 
-
-# Test prediction
 if __name__ == "__main__":
 
     image_path = "test_image_5.jpg"
 
     breed, confidence = predict_breed(image_path)
 
-    print("-----------------------------\n")
+    print("\n")
     print(f"Predicted Breed: {breed}")
     print(f"Confidence: {confidence:.2f}%")
-    print("-----------------------------\n")
+    print("\n")

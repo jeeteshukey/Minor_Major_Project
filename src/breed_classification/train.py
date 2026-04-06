@@ -8,19 +8,13 @@ import os
 from src.breed_classification.model import get_model
 
 
-# Device configuration
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print("Using device:", device)
 
 
-# Dataset paths
 train_dir = "datasets/breed_classification_2/train"
 val_dir = "datasets/breed_classification_2/val"
 
-
-# -------------------------------
-# TRAIN TRANSFORM (augmentation)
-# -------------------------------
 train_transform = transforms.Compose([
     transforms.Resize((224, 224)),
     transforms.RandomHorizontalFlip(),
@@ -40,9 +34,6 @@ train_transform = transforms.Compose([
 ])
 
 
-# -------------------------------
-# VALIDATION TRANSFORM (clean)
-# -------------------------------
 val_transform = transforms.Compose([
     transforms.Resize((224, 224)),
     transforms.ToTensor(),
@@ -52,40 +43,27 @@ val_transform = transforms.Compose([
     )
 ])
 
-
-# Load datasets
 train_dataset = datasets.ImageFolder(train_dir, transform=train_transform)
 val_dataset = datasets.ImageFolder(val_dir, transform=val_transform)
 
-
-# Data loaders
 train_loader = DataLoader(train_dataset, batch_size=32, shuffle=True)
 val_loader = DataLoader(val_dataset, batch_size=32)
 
-
-# Number of classes
 num_classes = len(train_dataset.classes)
 
 print("Classes detected:", train_dataset.classes)
 
-
-# Load model
 model = get_model(num_classes)
 model = model.to(device)
 
-
-# Loss function and optimizer
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model.parameters(), lr = 0.00005)
 
-
-# Training settings
 epochs = 39
 
 
 for epoch in range(epochs):
 
-    # TRAINING PHASE
     model.train()
     running_loss = 0
 
@@ -108,8 +86,6 @@ for epoch in range(epochs):
 
     epoch_loss = running_loss / len(train_loader)
 
-
-    # VALIDATION PHASE
     model.eval()
 
     correct = 0
@@ -143,8 +119,6 @@ for epoch in range(epochs):
 
 print("Training completed")
 
-
-# Save model
 os.makedirs("models/breed_classifier", exist_ok=True)
 
 model_path = "models/breed_classifier/breed_model.pth"

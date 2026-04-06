@@ -4,7 +4,6 @@ import tempfile
 import sys
 import os
 
-# Add project root to path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../")))
 
 from src.breed_classification.predict import predict_breed
@@ -12,7 +11,7 @@ from src.breed_classification.predict import predict_breed
 
 st.title("Breed Classification")
 
-st.write("Upload a cow image to identify its breed.")
+st.write("Upload a cattle image to identify its breed.")
 
 
 uploaded_file = st.file_uploader(
