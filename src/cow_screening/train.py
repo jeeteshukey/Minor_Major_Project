@@ -6,7 +6,7 @@ import torch.optim as optim
 from torch.utils.data import Dataset, DataLoader
 from sklearn.metrics import confusion_matrix, classification_report, f1_score
 
-from model import CNN1D
+from .model import CNN1D
 
 # =====================
 # CONFIG
@@ -16,7 +16,7 @@ val_dir   = r"D:\Final_Year_Project\Cattle_Breed\datasets\cow_screening\processe
 test_dir = r"D:\Final_Year_Project\Cattle_Breed\datasets\cow_screening\processed\test"
 
 batch_size = 64
-epochs = 20   # 🔥 increased
+epochs = 30   # 🔥 increased
 lr = 1e-3
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -30,7 +30,7 @@ class NPZDataset(Dataset):
         self.data = []
         self.labels = []
 
-        print(f"📂 Loading from {folder}...")
+        print(f"Loading from {folder}...")
 
         for f in self.files:
             npz = np.load(f)
@@ -52,7 +52,7 @@ class NPZDataset(Dataset):
         # 🔥 LABEL FIX (0-based)
         self.labels = self.labels - 1
 
-        print(f"✅ Loaded {len(self.data)} samples")
+        print(f"Loaded {len(self.data)} samples")
 
     def __len__(self):
         return len(self.data)
@@ -186,7 +186,7 @@ print("\nTraining complete & models saved")
 # =====================
 # TEST EVALUATION
 # =====================
-print("\n📊 Evaluating on TEST set...")
+print("\nEvaluating on TEST set...")
 
 model.eval()
 
@@ -210,10 +210,10 @@ with torch.no_grad():
 cm = confusion_matrix(all_labels, all_preds)
 f1 = f1_score(all_labels, all_preds, average="weighted")
 
-print("\n📊 Confusion Matrix:")
+print("\nConfusion Matrix:")
 print(cm)
 
-print("\n📊 Classification Report:")
+print("\nClassification Report:")
 print(classification_report(all_labels, all_preds))
 
-print(f"\n🔥 F1 Score: {f1:.4f}")
+print(f"\nF1 Score: {f1:.4f}")

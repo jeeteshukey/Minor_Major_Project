@@ -36,5 +36,8 @@ if uploaded_file is not None:
 
         breed, confidence = predict_breed(temp_path)
 
-        st.success(f"Predicted Breed: {breed}")
-        st.info(f"Confidence: {confidence:.2f}%")
+        if breed == "Unknown":
+            st.warning("This image does not match known cattle breeds.")
+        else:
+            st.success(f"Predicted Breed: {breed}")
+            st.info(f"Confidence: {confidence:.2f}%")

@@ -8,7 +8,8 @@ from src.breed_classification.model import get_model
 classes = [
     "Gir",
     "Holstein_Friesian",
-    "Sahiwal"
+    "Sahiwal",
+    "Unknown"
 ]
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")

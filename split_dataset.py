@@ -2,70 +2,79 @@ import os
 import random
 import shutil
 
-import os
-import random
-import shutil
 
-random.seed(42)
+# Source folder containing all unknown images
+source_folder = r"D:\Final_Year_Project\Dataset\Unknown"
 
-# Paths
-BASE_DIR = "datasets/breed_classification"
-RAW_DIR = os.path.join(BASE_DIR, "raw")
-TRAIN_DIR = os.path.join(BASE_DIR, "train")
-VAL_DIR = os.path.join(BASE_DIR, "val")
-TEST_DIR = os.path.join(BASE_DIR, "test")
 
-# Split ratio
-train_ratio = 0.7
-val_ratio = 0.15
-test_ratio = 0.15
+# Destination folders
+base_path = r"D:\Final_Year_Project\Cattle_Breed\datasets\breed_classification_2"
 
-# Loop through each breed folder
-for breed in os.listdir(RAW_DIR):
+train_folder = os.path.join(base_path, "train", "Unknown")
+val_folder = os.path.join(base_path, "val", "Unknown")
+test_folder = os.path.join(base_path, "test", "Unknown")
 
-    breed_path = os.path.join(RAW_DIR, breed)
 
-    if not os.path.isdir(breed_path):
-        continue
+# Create folders if not exist
+os.makedirs(train_folder, exist_ok=True)
+os.makedirs(val_folder, exist_ok=True)
+os.makedirs(test_folder, exist_ok=True)
 
-    # ✅ Only take image files
-    images = [f for f in os.listdir(breed_path)
-              if f.lower().endswith(('.jpg', '.jpeg', '.png'))]
 
-    # ✅ Skip empty folders
-    if len(images) == 0:
-        print(f"{breed} skipped (no images)")
-        continue
+# Supported image formats
+valid_extensions = (".jpg", ".jpeg", ".png", ".webp")
 
-    random.shuffle(images)
 
-    total = len(images)
+# Read all images
+images = [
+    img for img in os.listdir(source_folder)
+    if img.lower().endswith(valid_extensions)
+]
 
-    train_split = int(total * train_ratio)
-    val_split = int(total * val_ratio)
 
-    train_images = images[:train_split]
-    val_images = images[train_split:train_split + val_split]
-    test_images = images[train_split + val_split:]
+# Shuffle images randomly
+random.shuffle(images)
 
-    for img in train_images:
-        shutil.move(
-            os.path.join(breed_path, img),
-            os.path.join(TRAIN_DIR, breed, img)
-        )
 
-    for img in val_images:
-        shutil.move(
-            os.path.join(breed_path, img),
-            os.path.join(VAL_DIR, breed, img)
-        )
+# Total images
+total_images = len(images)
 
-    for img in test_images:
-        shutil.move(
-            os.path.join(breed_path, img),
-            os.path.join(TEST_DIR, breed, img)
-        )
+print(f"Total Images Found: {total_images}")
 
-    print(f"{breed} split completed")
 
-print("Dataset successfully split!")
+# Split sizes
+train_split = int(total_images * 0.78)
+val_split = int(total_images * 0.14)
+test_split = total_images - train_split - val_split
+
+
+# Split images
+train_images = images[:train_split]
+val_images = images[train_split:train_split + val_split]
+test_images = images[train_split + val_split:]
+
+
+# Function to copy images
+def copy_images(image_list, destination_folder):
+
+    for image in image_list:
+
+        src_path = os.path.join(source_folder, image)
+
+        dst_path = os.path.join(destination_folder, image)
+
+        shutil.copy2(src_path, dst_path)
+
+
+# Copy files
+copy_images(train_images, train_folder)
+copy_images(val_images, val_folder)
+copy_images(test_images, test_folder)
+
+
+# Final counts
+print("\nDataset Split Completed\n")
+
+print(f"Train Images: {len(train_images)}")
+print(f"Validation Images: {len(val_images)}")
+print(f"Test Images: {len(test_images)}")
